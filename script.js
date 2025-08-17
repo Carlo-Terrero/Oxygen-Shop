@@ -19,10 +19,10 @@ let emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-
 //Esta funcion se encarga del scroll automatico hacia arriba, de forma suave y despues de un tiempo
 document.querySelector("div.btn__scroll_up").addEventListener('click', () => {
     setTimeout(() =>{
-        window.scroll({ top: 0, behavior: 'smooth' })
-    }, 200)
-    
-})
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }, 200); 
+
+});
 
 
 //En relacion al % de scroll que hacemos, se extiende el mismo % del ancho del div que utilizamos como indicador.
@@ -33,10 +33,8 @@ window.onscroll = function() {
     document.querySelector('.percentage-scroller').style.width = `${longitud}%`;
 
     if (longitud == 25 && sessionStorage.getItem('value') == 1 ) {
-        pop.style.display = 'block';
-        
-    }
-
+        pop.style.display = 'block';  
+    };
 };
 
 
@@ -65,13 +63,12 @@ setTimeout(function(){
                 .then((response) => response.json())
                 .then((json) => console.log(json));
     
-                alert('Su Solicitud ha sido Enviada.')
+                alert('Su Solicitud ha sido Enviada.');
     
                 document.querySelector('.form').reset();
                 
-            })
-        }
-
+            });
+    };
 }, 5000);
 
 
@@ -162,89 +159,77 @@ function operationButton(position){
     }else{
         btn.disabled = true;
         btn.style.background = 'grey';
-    }
-}
+    };
+};
 
 //Cerrar Modal
 
 document.querySelector('.info__newsletter__btn__close').addEventListener('click', () => {
-    closedModal()
+    closedModal();
     pop.style.display = 'none';
-})
+});
 
 window.addEventListener('keyup', (e) => {
     if (e.key === "Escape"){
         closedModal()
         pop.style.display = 'none';
-    }
+    };
 
-})
-
-/*
-https://www.google.com/search?q=validar+una+direcci%C3%B3n+de+email+javascript&rlz=1C1CHBF_esES999ES999&oq=validar+direcci%C3%B3n+de+correo+ja&aqs=chrome.1.69i57j0i22i30.13084j0j7&sourceid=chrome&ie=UTF-8
-*/
+});
 
 let cambio = 0
-async function divisas(moneda){
+function divisas(moneda){
     
-    let response = await fetch(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/${moneda}.json`)
+    // La referencia se hace en dollar luego se ajusta el precio según el costo del dollar
+    // Se hacia con una API pero dejó de funcionar
+    const P_BASIC = 29.90;
+    const P_PROFESSIONAL = 39.90;
+    const P_PREMIUM = 44.90;
+    
+    switch(moneda){
+        case 'usd':
+            precios[0].innerHTML = '$' + P_BASIC.toFixed(2);
+            precios[1].innerHTML = '$' + P_PROFESSIONAL.toFixed(2);
+            precios[2].innerHTML = '$' + P_PREMIUM.toFixed(2);
+            break;
 
-    if(response.ok){
-        let respo = await response.json()
-        cambio = respo[moneda]
+        case 'eur':
+            precios[0].innerHTML = (P_BASIC * 0.85).toFixed(2) + '€';
+            precios[1].innerHTML = (P_PROFESSIONAL * 0.85).toFixed(2) + '€';
+            precios[2].innerHTML = (P_PREMIUM * 0.85).toFixed(2) + '€';
+            break;
 
-        switch(selector.value){
-            case 'usd':
-                precios[0].innerHTML = '$' + Math.floor(cambio * 0);
-                precios[1].innerHTML = '$' + Math.floor(cambio * 25);
-                precios[2].innerHTML = '$' + Math.floor(cambio * 60);
-                break;
-
-            case 'eur':
-                precios[0].innerHTML = Math.floor(cambio * 0) + '€';
-                precios[1].innerHTML = Math.floor(cambio * 25) + '€';
-                precios[2].innerHTML = Math.floor(cambio * 60) + '€';
-                break;
-
-            case 'gbp':
-                precios[0].innerHTML = '₤' + Math.floor(cambio * 0);
-                precios[1].innerHTML = '₤' + Math.floor(cambio * 25);
-                precios[2].innerHTML = '₤' + Math.floor(cambio * 60);
-                break;
-                
-            default:
-                alert('parametro incorrecto');
-                break;
+        case 'gbp':
+            precios[0].innerHTML = '₤' + (P_BASIC * 0.74).toFixed(2);
+            precios[1].innerHTML = '₤' + (P_PROFESSIONAL * 0.74).toFixed(2);
+            precios[2].innerHTML = '₤' + (P_PREMIUM * 0.74).toFixed(2);
+            break;
             
-        }
-        
-    }
-    
-}
+        default:
+            alert('parametro incorrecto');
+            break;   
+    };  
+};
 
-let precios = document.querySelectorAll('mark')
+
+
+let precios = document.querySelectorAll('mark');
 
 let selector = document.querySelector('.pricing__currency__select');
 selector.addEventListener('change', () =>{
-
    divisas(selector.value);
-
-})
+});
 
 window.addEventListener("DOMContentLoaded", () => {
     divisas(selector.value);
-    
 });
 
 function closedModal(){
     sessionStorage.setItem('value', '0');
+};
 
-}
-
-//sessionStorage.setItem('value', '0'
 class Slider{
     constructor(){
-        //this.element = element;
         this.images = document.getElementsByClassName('slide__img');
         this.buttons = document.getElementsByClassName('slide__btn');
         this.cont = 0;
@@ -252,25 +237,19 @@ class Slider{
     }
 
     change(){
-        setInterval(() =>
-        {
-        this.images[this.cont].classList.remove('slide__img--active')
-        this.buttons[this.cont].classList.remove('slide__btn--active')
+        setInterval(() => {
+            this.images[this.cont].classList.remove('slide__img--active');
+            this.buttons[this.cont].classList.remove('slide__btn--active');
 
-        this.cont < 3 ? this.cont++ : this.cont = 0
-        this.images[this.cont].classList.add('slide__img--active')
-        this.buttons[this.cont].classList.add('slide__btn--active')
-
-        }
-        ,2000) 
+            this.cont < 3 ? this.cont++ : this.cont = 0
+            this.images[this.cont].classList.add('slide__img--active');
+            this.buttons[this.cont].classList.add('slide__btn--active');
+        },2000);
     }
 
 }
 
-const images = document.getElementsByClassName('slide__img')
-const buttons = document.getElementsByClassName('slide__btn')
-//console.log(buttons)
-new Slider()
+const images = document.getElementsByClassName('slide__img');
+const buttons = document.getElementsByClassName('slide__btn');
 
-
-setInterval( console.log('kak') , 2000)
+new Slider();
