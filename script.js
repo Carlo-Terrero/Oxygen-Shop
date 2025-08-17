@@ -11,6 +11,11 @@ let btn = document.querySelector('#submit-btn');
 btn.disabled = true;
 btn.style.background = 'grey';
 
+const openShop = document.querySelector(".header__info__btn");
+openShop.addEventListener("click", function(){
+    pop.style.display = 'block'; 
+});
+
 sessionStorage.setItem('value', '1');
 
 
@@ -70,9 +75,6 @@ setTimeout(function(){
             });
     };
 }, 5000);
-
-
-
 
 //validar fomulario
 intText.addEventListener('input', (event) => {
